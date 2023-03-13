@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
 
     private bool isCharging = false;
     private bool isDashing = false;
+    private bool isNormal = true;
     private Vector2 dashDirection;
     private float chargePower = 0f;
     private const float ChargeRate = 20;
@@ -30,6 +31,7 @@ public class PlayerController : MonoBehaviour
          //Holding space, and not dashing - power up charge
         if (Input.GetKey(KeyCode.Space) && !isDashing) {
             isCharging = true;
+            isNormal = false;
             chargePower += Time.deltaTime * ChargeRate;
             dashDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
             spriteRenderer.color = Color.red;
@@ -37,6 +39,7 @@ public class PlayerController : MonoBehaviour
         } else if (isCharging) {
             isCharging = false;
             isDashing = true;
+            isNormal = false;
            // transform.eulerAngles = new Vector3(0, 0, Vector2.SignedAngle(Vector2.right, dashDirection));
             rigidBody.AddForce(dashDirection.normalized * chargePower, ForceMode2D.Impulse);
             chargePower = 0f;
@@ -50,18 +53,19 @@ public class PlayerController : MonoBehaviour
             //If we've slowed down enough, stop dashing
             if( rigidBody.velocity.magnitude < 0.5f ) {
                 isDashing = false;
+                isNormal = true;
                 rigidBody.velocity = Vector2.zero;
                 transform.eulerAngles = Vector3.zero;
             }
         }
 
         // Reset color when not charging or dashing
-        if(!isDashing && !isCharging) {
+        if(isNormal) {
             spriteRenderer.color = Color.white;
         }
 
         //Only fire if not charging or dashing
-        if (Input.GetMouseButtonDown(0) && !isCharging && !isDashing) {
+        if (Input.GetMouseButtonDown(0) && isNormal) {
             Vector2 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
             direction.Normalize();
             GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
@@ -72,7 +76,7 @@ public class PlayerController : MonoBehaviour
         }
         
         // Only move if not charging or dashing
-        if( !isCharging && !isDashing) {
+        if(isNormal) {
             movement.x = Input.GetAxisRaw("Horizontal");
             movement.y = Input.GetAxisRaw("Vertical");
             animator.SetFloat("Horizontal", movement.x);
