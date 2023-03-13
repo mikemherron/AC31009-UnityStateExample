@@ -15,7 +15,7 @@ public class HealthBar : MonoBehaviour
     {
         slider.minValue = 0;
         slider.maxValue = healthController.maxHealth;
-        slider.value = healthController.health;
+        slider.value = healthController.maxHealth;
         healthController.onHealthUpdated.AddListener(UpdateHealth);
     }
 
