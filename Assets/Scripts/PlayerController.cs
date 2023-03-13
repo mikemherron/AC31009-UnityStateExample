@@ -24,9 +24,10 @@ public class PlayerController : MonoBehaviour
     private const float ChargeRate = 20;
 
     private const float ChargeFriection = 2;
-    void Update()
+
+    void FixedUpdate() 
     {
-        //Holding space, and not dashing - power up charge
+         //Holding space, and not dashing - power up charge
         if (Input.GetKey(KeyCode.Space) && !isDashing) {
             isCharging = true;
             chargePower += Time.deltaTime * ChargeRate;
@@ -77,13 +78,7 @@ public class PlayerController : MonoBehaviour
             animator.SetFloat("Horizontal", movement.x);
             animator.SetFloat("Vertical", movement.y);
             animator.SetFloat("Speed", movement.sqrMagnitude);
-        }
-    }
-
-    void FixedUpdate() 
-    {
-        // Only move if not charging or dashing
-        if(!isCharging && !isDashing) {
+      
             rigidBody.MovePosition(rigidBody.position + movement.normalized * moveSpeed * Time.fixedDeltaTime);
         }
     }
