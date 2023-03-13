@@ -20,12 +20,26 @@ public class PlayerController : MonoBehaviour
     private bool isCharging = false;
     private bool isDashing = false;
     private bool isNormal = true;
+    
     private Vector2 dashDirection;
     private float chargePower = 0f;
     private const float ChargeRate = 20;
 
     private const float ChargeFriection = 2;
 
+    void Update()
+    {
+        //Only fire if not charging or dashing
+        if (Input.GetMouseButtonDown(0) && isNormal) {
+            Vector2 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+            direction.Normalize();
+            GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
+            BulletController controller = bullet.GetComponent<BulletController>();
+            controller.direction = direction;
+            controller.firedBy = gameObject;
+            Physics2D.IgnoreCollision(bullet.GetComponent<Collider2D>(), GetComponent<Collider2D>());
+        }
+    }
     void FixedUpdate() 
     {
          //Holding space, and not dashing - power up charge
@@ -64,17 +78,6 @@ public class PlayerController : MonoBehaviour
             spriteRenderer.color = Color.white;
         }
 
-        //Only fire if not charging or dashing
-        if (Input.GetMouseButtonDown(0) && isNormal) {
-            Vector2 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-            direction.Normalize();
-            GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
-            BulletController controller = bullet.GetComponent<BulletController>();
-            controller.direction = direction;
-            controller.firedBy = gameObject;
-            Physics2D.IgnoreCollision(bullet.GetComponent<Collider2D>(), GetComponent<Collider2D>());
-        }
-        
         // Only move if not charging or dashing
         if(isNormal) {
             movement.x = Input.GetAxisRaw("Horizontal");
