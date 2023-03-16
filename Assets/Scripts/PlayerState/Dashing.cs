@@ -5,6 +5,7 @@ namespace PlayerState
 
   public class Dashing : BaseState
   {
+    
     const float DashFriction = 2;
     private float power = 0f;
 

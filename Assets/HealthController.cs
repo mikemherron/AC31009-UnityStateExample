@@ -6,6 +6,7 @@ public class HealthUpdatedEvent : UnityEvent<int> { }
 
 public class HealthController : MonoBehaviour
 {
+    
     public int maxHealth;
     public int health;
     public HealthUpdatedEvent onHealthUpdated;

@@ -5,6 +5,7 @@ namespace PlayerState
 
   public class Normal : BaseState
   {
+    
     const float MoveSpeed = 5f;
 
     private GameObject bulletPrefab;

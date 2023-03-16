@@ -5,6 +5,7 @@ namespace PlayerState
 
   public class Charging : BaseState
   {
+    
     const float ChargeRate = 20f;
 
     private float chargePower = 0f;
