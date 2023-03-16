@@ -226,7 +226,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 3977417123394648783, guid: ec901c0932cd2ef428af14cc00331dd6, type: 3}
-  moveSpeed: 5
+  moveSpeed: 10
   rigidBody: {fileID: 28561650}
   movement: {x: 0, y: 0}
   animator: {fileID: 28561651}

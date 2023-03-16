@@ -2,30 +2,30 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    
+    private const float ChargeRate = 20;
+    private const float ChargeFriction = 2;
+
     private HealthController healthController;
     public GameObject bulletPrefab;
-
     public float moveSpeed = 0f;
     public Rigidbody2D rigidBody;
     public Vector2 movement;
     public Animator animator;
     public AudioSource hitSound;
     private SpriteRenderer spriteRenderer;
-    void Start()
-    {
-        healthController = GetComponent<HealthController>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-    }
-
     private bool isCharging = false;
     private bool isDashing = false;
     private bool isNormal = true;
     
     private Vector2 dashDirection;
     private float chargePower = 0f;
-    private const float ChargeRate = 20;
 
-    private const float ChargeFriection = 2;
+    void Start()
+    {
+        healthController = GetComponent<HealthController>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
 
     void Update()
     {
@@ -54,7 +54,6 @@ public class PlayerController : MonoBehaviour
             isCharging = false;
             isDashing = true;
             isNormal = false;
-           // transform.eulerAngles = new Vector3(0, 0, Vector2.SignedAngle(Vector2.right, dashDirection));
             rigidBody.AddForce(dashDirection.normalized * chargePower, ForceMode2D.Impulse);
             chargePower = 0f;
         }
@@ -62,7 +61,7 @@ public class PlayerController : MonoBehaviour
         if(isDashing) {
             //If dashing, go a random color
             spriteRenderer.color = Random.ColorHSV();
-            rigidBody.velocity = rigidBody.velocity * (1 - ChargeFriection * Time.deltaTime);
+            rigidBody.velocity = rigidBody.velocity * (1 - ChargeFriction * Time.deltaTime);
             transform.Rotate(0, 0, 100 * Time.deltaTime * rigidBody.velocity.magnitude);
             //If we've slowed down enough, stop dashing
             if( rigidBody.velocity.magnitude < 0.5f ) {
